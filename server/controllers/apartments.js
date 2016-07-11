@@ -4,7 +4,7 @@ import express from 'express';
 import Apartment from '../models/apartment';
 import Renter from '../models/renter';
 import bodyValidator from '../validators/apartments/body';
-// import queryValidator from '../validators/bookmarks/query';
+import queryValidator from '../validators/apartments/query';
 // import paramsValidator from '../validators/bookmarks/params';
 const router = module.exports = express.Router();
 
@@ -16,18 +16,18 @@ router.post('/', bodyValidator, (req, res) => {
 });
 
 // get
-router.get('/', (req, res) => {
-  // Bookmark.find(res.locals.filter)
+router.get('/', queryValidator, (req, res) => {
+  Apartment.find(res.locals.filter)
   //       .sort(res.locals.sort)
   //       .limit(res.locals.limit)
   //       .skip(res.locals.skip)
-  //       .exec((err, bookmarks) => {
-  //         res.send({ bookmarks });
-  //       });
-  //
-  Apartment.find((err, apartments) => {
-    res.send({ apartments });
-  });
+        .exec((err, apartments) => {
+          res.send({ apartments });
+        });
+
+  // Apartment.find((err, apartments) => {
+  //   res.send({ apartments });
+  // });
 });
 
 // get

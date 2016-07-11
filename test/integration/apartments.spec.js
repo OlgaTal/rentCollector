@@ -54,13 +54,33 @@ describe('apartments', () => {
     });
 
     // it('should filter apartments by floor, square feet and isVacant', (done) => {
-    it.only('should filter apartments by isVacant', (done) => {
+    it('should filter apartments by isVacant', (done) => {
       request(app)
       .get('/apartments?filter[isVacant]=true')
       .end((err, rsp) => {
         expect(err).to.be.null;
         expect(rsp.status).to.equal(200);
         expect(rsp.body.apartments).to.have.length(3);
+        done();
+      });
+    });
+    it('should filter apartments by isVacant = false', (done) => {
+      request(app)
+      .get('/apartments?filter[isVacant]=false')
+      .end((err, rsp) => {
+        expect(err).to.be.null;
+        expect(rsp.status).to.equal(200);
+        expect(rsp.body.apartments).to.have.length(2);
+        done();
+      });
+    });
+    it('should filter apartments by sqft >= 1200', (done) => {
+      request(app)
+      .get('/apartments?filter[sqft]=1200')
+      .end((err, rsp) => {
+        expect(err).to.be.null;
+        expect(rsp.status).to.equal(200);
+        expect(rsp.body.apartments).to.have.length(4);
         done();
       });
     });
