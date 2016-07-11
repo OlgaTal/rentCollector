@@ -1,1 +1,1 @@
-# template
+# Rent Collector
