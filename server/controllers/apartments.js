@@ -17,17 +17,13 @@ router.post('/', bodyValidator, (req, res) => {
 
 // get
 router.get('/', queryValidator, (req, res) => {
-  Apartment.find(res.locals.filter)
+  Apartment.find(res.locals.filter2)
   //       .sort(res.locals.sort)
   //       .limit(res.locals.limit)
   //       .skip(res.locals.skip)
         .exec((err, apartments) => {
           res.send({ apartments });
         });
-
-  // Apartment.find((err, apartments) => {
-  //   res.send({ apartments });
-  // });
 });
 
 // get

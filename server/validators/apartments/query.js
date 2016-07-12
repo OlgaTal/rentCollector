@@ -5,7 +5,7 @@ import joi from 'joi';
 const schema = {
   filter: joi.object().keys({
     // floor: joi.number().default(1),
-    // bedrooms: joi.number().default(1),
+    bedrooms: joi.number(),
     isVacant: joi.boolean(),
     sqft: joi.number().default(0),
   }),
@@ -20,16 +20,24 @@ module.exports = (req, res, next) => {
   } else {
     res.locals = result.value;
 
-    // it's not a good thing to do, but let's modify the filter:
     if (result.value.filter) {
+      const filter2 = {};
       if (result.value.filter.isVacant || result.value.filter.isVacant === false) {
-        res.locals.filter.renter = result.value.filter.isVacant ?
+        filter2.renter = result.value.filter.isVacant ?
             { $exists: false } : { $ne: null };
-        delete result.value.filter.isVacant;
+      }
+      filter2.sqft = { $gte: res.locals.filter.sqft };
+
+      if (res.locals.filter.bedrooms > 0) {
+        filter2.bedrooms = res.locals.filter.bedrooms;
       }
 
-      res.locals.filter.sqft = { $gte: res.locals.filter.sqft };
+      res.locals.filter2 = filter2;
+    } else {
+      res.locals.filter2 = null;
     }
+
+    console.log('filter2:', res.locals.filter2);
 
     next();
   }

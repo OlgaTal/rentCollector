@@ -84,6 +84,16 @@ describe('apartments', () => {
         done();
       });
     });
+    it('should filter apartments by number of bedrooms = 3', (done) => {
+      request(app)
+      .get('/apartments?filter[bedrooms]=3')
+      .end((err, rsp) => {
+        expect(err).to.be.null;
+        expect(rsp.status).to.equal(200);
+        expect(rsp.body.apartments).to.have.length(1);
+        done();
+      });
+    });
   });
 
   describe('get /apartments/:id', () => {
